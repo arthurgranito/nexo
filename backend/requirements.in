@@ -1,0 +1,15 @@
+# Congelado via: pip-compile --generate-hashes requirements.in
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+sqlalchemy>=2.0,<3
+psycopg[binary]>=3.2,<4
+alembic>=1.14,<2
+pydantic-settings>=2.7,<3
+PyJWT[crypto]>=2.10,<3
+arq>=0.26,<1
+langgraph>=1,<2
+pgvector>=0.3,<1
+httpx>=0.28,<1
+sqlglot>=26,<40
+pytest>=8,<10
+ruff>=0.11,<1
