@@ -1,0 +1,4 @@
+data;loja;produto;quantidade;valor_total;status
+2026-10-01;Centro;Tinta branca 18L;2;480.00;concluida
+2026-10-02;Bairro;Selador 18L;1;120.00;concluida
+2026-10-03;Centro;Tinta branca 18L;1;240.00;devolvida
