@@ -32,6 +32,12 @@ Registro por ticket (commit, checks, limitações). O roadmap não substitui est
 - **Arquivos:** `frontend/app/login/page.tsx`, `frontend/lib/supabase.ts`, `frontend/app/app/layout.tsx`
 - **Checks:** `npm run typecheck`, `npm run build` (rotas `/login`, `/app`)
 
+## Skills locais de desenvolvimento (docs/prompts.md)
+
+- **Arquivos:** `.cursor/skills/nexo-tenant-review/SKILL.md`, `nexo-connector`, `nexo-eval`, `nexo-release`; `backend/tests/test_cursor_skills.py`
+- **Checks:** `pytest tests/test_cursor_skills.py` (12); `ruff check tests/test_cursor_skills.py`
+- **Limitações:** skills orientam o agente; harness `evals/` e conectores além do boilerplate ainda dependem dos tickets BE-004+ / BE-011
+
 ## Contas pendentes
 
 - Projeto Supabase real (URL + anon key) para login de produção/staging
