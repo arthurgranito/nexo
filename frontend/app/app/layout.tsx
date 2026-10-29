@@ -4,7 +4,8 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { fetchOrganizations, type Organization } from "@/lib/api";
-import { getSupabase } from "@/lib/supabase";
+import { persistSupabaseSession } from "@/lib/auth";
+import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 import {
   clearSession,
   readAccessToken,
@@ -20,24 +21,33 @@ export default function AppShell({ children }: { children: ReactNode }) {
   const [tenantId, setTenantId] = useState("");
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
-  const cacheEpoch = readCacheEpoch();
+  const [cacheEpoch, setCacheEpoch] = useState("0");
+
+  useEffect(() => {
+    setCacheEpoch(readCacheEpoch());
+  }, []);
 
   useEffect(() => {
     let active = true;
     async function boot() {
       setError("");
       try {
-        const supabase = getSupabase();
-        if (supabase) {
-          const { data } = await supabase.auth.getSession();
-          if (!data.session) {
-            router.replace("/login");
-            return;
-          }
-          writeAccessToken(data.session.access_token);
-          const { data: refreshed } = await supabase.auth.refreshSession();
-          if (refreshed.session) {
-            writeAccessToken(refreshed.session.access_token);
+        if (supabaseConfigured()) {
+          const supabase = getSupabase();
+          if (supabase) {
+            const { data: existing } = await supabase.auth.getSession();
+            if (existing.session) {
+              writeAccessToken(existing.session.access_token);
+              const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+              if (!refreshError && refreshed.session) {
+                writeAccessToken(refreshed.session.access_token);
+              }
+            } else if (!(await persistSupabaseSession(supabase))) {
+              if (!readAccessToken()) {
+                router.replace("/login");
+                return;
+              }
+            }
           }
         } else if (!readAccessToken()) {
           router.replace("/login");
@@ -49,7 +59,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
         }
         const stored = readTenantId();
         const selected = items.some((item) => item.id === stored) ? stored : items[0].id;
-        writeTenantId(selected);
+        writeTenantId(selected, false);
         if (active) {
           setOrganizations(items);
           setTenantId(selected);
@@ -65,7 +75,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
     return () => {
       active = false;
     };
-  }, [router, cacheEpoch]);
+  }, [router]);
 
   async function logout() {
     const supabase = getSupabase();
@@ -77,14 +87,20 @@ export default function AppShell({ children }: { children: ReactNode }) {
   }
 
   function changeTenant(nextTenant: string) {
-    writeTenantId(nextTenant);
+    writeTenantId(nextTenant, true);
     setTenantId(nextTenant);
+    setCacheEpoch(readCacheEpoch());
   }
 
   if (!ready) {
     return (
-      <main className="mx-auto max-w-6xl p-8 text-sm text-slate-600">
-        {error || "Carregando sessão…"}
+      <main className="mx-auto max-w-6xl space-y-4 p-8 text-sm text-slate-600">
+        <p>{error || "Carregando sessão…"}</p>
+        {error && (
+          <Button className="bg-white text-emerald-800 ring-1 ring-emerald-200" onClick={logout}>
+            Voltar ao login
+          </Button>
+        )}
       </main>
     );
   }

@@ -24,9 +24,11 @@ export function readTenantId(): string {
   return localStorage.getItem(TENANT_KEY) ?? "";
 }
 
-export function writeTenantId(tenantId: string): void {
+export function writeTenantId(tenantId: string, invalidateCache = true): void {
   localStorage.setItem(TENANT_KEY, tenantId);
-  bumpCacheEpoch();
+  if (invalidateCache) {
+    bumpCacheEpoch();
+  }
 }
 
 export function bumpCacheEpoch(): void {

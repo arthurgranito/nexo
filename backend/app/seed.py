@@ -20,6 +20,7 @@ def main():
                 DEV_USER,
                 tenant_id=DEMO_TENANT,
             )
+            apply_session_context(db, tenant_id=DEMO_TENANT, user_id=DEV_USER)
             db.add(Subscription(tenant_id=DEMO_TENANT))
         elif db.get_bind().dialect.name == "postgresql":
             tenant = db.get(Tenant, DEMO_TENANT)

@@ -1,6 +1,7 @@
 import { readAccessToken, readTenantId } from "@/lib/session";
 
-const API = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "http://localhost:8000";
+/** Vazio = mesma origem (Next faz proxy /v1 → API no Docker ou dev). */
+const API = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "";
 
 export async function apiRequest<T>(
   path: string,

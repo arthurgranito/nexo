@@ -10,9 +10,13 @@ docker compose up --build -d
 docker compose --profile tools run --rm seed
 ```
 
-Abra http://localhost:3000 e http://localhost:8000/docs.
-Na interface, mantenha a organização demo e informe o `DEV_TOKEN` do `.env`.
-Clique “Carregar fontes”, cadastre outra fonte e envie uma pergunta. O retorno deve indicar
+Abra http://localhost:3000/login (a UI chama a API via proxy em `/v1`) e http://localhost:8000/docs.
+Após mudar o frontend, rode `docker compose up --build -d web`.
+Se `/login` mostrar só **Carregando sessão…** (sem formulário), reconstrua a imagem do web:
+`docker compose build --no-cache web` e depois `docker compose up -d web`. O Dockerfile usa `WORKDIR /src`
+(deixe de usar `/app` no build) para não confundir o Next com a pasta `app/` do App Router.
+Entre com Supabase (quando configurado) ou com o `DEV_TOKEN` do `.env` em development.
+Selecione a organização demo, clique “Carregar fontes”, cadastre outra fonte e envie uma pergunta. O retorno deve indicar
 `needs_setup`, sem inventar valores da empresa. O cadastro ainda não importa o conteúdo de arquivos.
 
 ```powershell
@@ -54,6 +58,23 @@ npm run dev
 Abra esta pasta no editor, leia `AGENTS.md` e use o prompt Setup de `docs/prompts.md`.
 Depois execute os tickets pela ordem de dependência, começando por INF-001 e BE-001.
 Faça commits pequenos e revise cada migration antes de aplicá-la.
+
+## Login: e-mail, senha e Google (Supabase)
+
+1. Crie um projeto em [Supabase](https://supabase.com) e copie **Project URL** e **anon key**
+   para `.env` (`NEXT_PUBLIC_*` e `SUPABASE_URL` com a mesma URL).
+2. No Supabase: **Authentication → Providers → Google** — ative e informe Client ID/Secret
+   do [Google Cloud Console](https://console.cloud.google.com/) (OAuth consent + credencial Web).
+3. Em **Authentication → URL Configuration**, adicione redirect:
+   `http://localhost:3000/auth/callback` (e o domínio de produção depois).
+4. No Google Cloud, **Authorized redirect URI** deve incluir o callback do Supabase
+   (algo como `https://<projeto>.supabase.co/auth/v1/callback`), não só o do Nexo.
+5. **E-mail/senha:** deixe Email provider habilitado; confirmação de e-mail conforme política do projeto.
+6. Após o primeiro login, o usuário precisa de **membership** num tenant (seed local só cobre
+   `DEV_USER`; usuários Google/e-mail reais exigem convite ou script admin — ver BE-017).
+
+Rebuild do frontend Docker após mudar variáveis `NEXT_PUBLIC_*`:
+`docker compose up --build -d web`.
 
 ## O que exige suas contas
 

@@ -43,11 +43,11 @@ services:
     networks: [nexo]
   migrate:
     <<: *migrate
-    command: [alembic, upgrade, head]
+    command: [sh, -c, "alembic upgrade head && python -m app.sync_roles"]
     depends_on:
       db: {condition: service_healthy}
   seed:
-    <<: *backend
+    <<: *migrate
     profiles: [tools]
     command: [python, -m, app.seed]
     depends_on:
@@ -73,9 +73,10 @@ services:
     build:
       context: ./frontend
       args:
+        API_PROXY_TARGET: http://api:8000
         NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        NEXT_PUBLIC_API_URL: ""
         NEXT_PUBLIC_DEV_AUTH: ${NEXT_PUBLIC_DEV_AUTH:-true}
     ports: ["127.0.0.1:3000:3000"]
     depends_on:
