@@ -16,7 +16,7 @@ e os principais cenários de falha. Execute os checks relevantes e reporte arqui
 evidência, limitações e próximo ticket. Não faça deploy, compras ou comunicação externa.
 ```
 
-## Setup
+## Setup -> FEITO
 
 ```text
 Implemente INF-001, depois BE-001/002/003 e FE-001, um commit por ticket. Primeiro apresente
@@ -84,7 +84,7 @@ duplicadas, fora de ordem, pedido alheio, jailbreak e resposta atrasada após as
 Use sandbox e fixtures; mantenha rollout desativado até gate por organização.
 ```
 
-## Criar skills locais de desenvolvimento
+## Criar skills locais de desenvolvimento -> FEITO
 
 ```text
 Crie skills versionadas neste repositório, sem instalar globalmente:
@@ -98,7 +98,9 @@ e limites. Não pedir aprovação para mudanças locais reversíveis já autoriz
 Adicione exemplos pequenos e referências aos documentos do projeto; evite copiar o roadmap.
 ```
 
-## Criar agentes de desenvolvimento (opcional)
+## Criar agentes de desenvolvimento (opcional) -> FEITO
+
+Definições: [agentes-desenvolvimento.md](agentes-desenvolvimento.md) e skills `.cursor/skills/nexo-dev-*/`.
 
 ```text
 Prepare definições portáveis de papéis (não execute agentes ainda): Implementador do ticket,

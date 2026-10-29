@@ -14,6 +14,10 @@ EXPECTED_SKILLS = (
     "nexo-connector",
     "nexo-eval",
     "nexo-release",
+    "nexo-dev-implementer",
+    "nexo-dev-isolation-reviewer",
+    "nexo-dev-quality",
+    "nexo-dev-ux",
 )
 
 REQUIRED_SECTIONS = (

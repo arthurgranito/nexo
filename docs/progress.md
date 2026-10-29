@@ -38,6 +38,12 @@ Registro por ticket (commit, checks, limitações). O roadmap não substitui est
 - **Checks:** `pytest tests/test_cursor_skills.py` (12); `ruff check tests/test_cursor_skills.py`
 - **Limitações:** skills orientam o agente; harness `evals/` e conectores além do boilerplate ainda dependem dos tickets BE-004+ / BE-011
 
+## Papéis de agente de desenvolvimento (docs/prompts.md — opcional)
+
+- **Arquivos:** `docs/agentes-desenvolvimento.md`; `.cursor/skills/nexo-dev-implementer`, `nexo-dev-isolation-reviewer`, `nexo-dev-quality`, `nexo-dev-ux`; `backend/tests/test_cursor_skills.py` (8 skills)
+- **Checks:** `pytest backend/tests/test_cursor_skills.py`; `ruff check backend/tests/test_cursor_skills.py`
+- **Limitações:** definições portáveis apenas — nenhum agente LangGraph ou subagente foi executado nesta entrega; revisão não autoriza deploy
+
 ## Contas pendentes
 
 - Projeto Supabase real (URL + anon key) para login de produção/staging
