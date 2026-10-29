@@ -44,6 +44,12 @@ Registro por ticket (commit, checks, limitações). O roadmap não substitui est
 - **Checks:** `pytest backend/tests/test_cursor_skills.py`; `ruff check backend/tests/test_cursor_skills.py`
 - **Limitações:** definições portáveis apenas — nenhum agente LangGraph ou subagente foi executado nesta entrega; revisão não autoriza deploy
 
+## MCPs de desenvolvimento (docs/prompts.md)
+
+- **Arquivos:** `docs/mcp-desenvolvimento.md`; `.cursor/mcp.json.example`; `backend/tests/test_cursor_skills.py` (contrato MCP)
+- **Checks:** `pytest backend/tests/test_cursor_skills.py`; `ruff check backend/tests/test_cursor_skills.py`
+- **Limitações:** nenhum servidor MCP instalado ou conta conectada; servidor custom Nexo adiado até BE-011+; browser staging depende de `STAGING_BASE_URL` e login humano
+
 ## Contas pendentes
 
 - Projeto Supabase real (URL + anon key) para login de produção/staging

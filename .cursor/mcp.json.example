@@ -1,0 +1,25 @@
+{
+  "_comment": "Exemplo de escopo mínimo. Copie para configuração MCP do Cursor no seu usuário. Não commitar tokens. Ajuste comandos aos pacotes que você instalar manualmente.",
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "fetch-docs": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "env": {}
+    },
+    "postgres-local-readonly": {
+      "_disabled_until": "BE-011 ou necessidade comprovada",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "${NEXO_MCP_PG_DSN}"],
+      "env": {
+        "NEXO_MCP_PG_DSN": "postgresql://nexo_executor:REDACTED@127.0.0.1:5432/nexo"
+      }
+    }
+  }
+}

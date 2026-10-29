@@ -35,6 +35,21 @@ PROHIBITED_PERMISSIONS = (
     "deploy",
 )
 
+MCP_DOC = REPO_ROOT / "docs" / "mcp-desenvolvimento.md"
+MCP_EXAMPLE = REPO_ROOT / ".cursor" / "mcp.json.example"
+
+MCP_REQUIRED_SECTIONS = (
+    "## Veredito",
+    "## Escopo mínimo por bloco",
+    "Documentação oficial",
+    "GitHub do repositório",
+    "Banco local de teste",
+    "Browser de staging",
+    "## Servidor MCP customizado Nexo",
+    "execute_sql",
+    "Testes de abuso",
+)
+
 
 @pytest.mark.parametrize("skill_dir", EXPECTED_SKILLS)
 def test_skill_directory_and_frontmatter(skill_dir: str) -> None:
@@ -65,3 +80,19 @@ def test_skill_limits_forbid_external_side_effects(skill_dir: str) -> None:
         assert phrase in limits_block, (
             f"{skill_dir}: Limites deve mencionar restrição a '{phrase}'"
         )
+
+
+def test_mcp_desenvolvimento_doc_contract() -> None:
+    assert MCP_DOC.is_file(), f"Documento MCP ausente: {MCP_DOC}"
+    text = MCP_DOC.read_text(encoding="utf-8").lower()
+    for section in MCP_REQUIRED_SECTIONS:
+        assert section.lower() in text, f"mcp-desenvolvimento.md: seção faltando: {section}"
+    assert "inf-002" in text, "deve apontar próximo ticket INF-002"
+
+
+def test_mcp_json_example_no_real_secrets() -> None:
+    assert MCP_EXAMPLE.is_file(), f"Exemplo MCP ausente: {MCP_EXAMPLE}"
+    raw = MCP_EXAMPLE.read_text(encoding="utf-8")
+    assert "ghp_" not in raw and "sk-" not in raw
+    assert "${GITHUB_TOKEN}" in raw or "GITHUB_TOKEN" in raw
+    assert "127.0.0.1" in raw, "DSN de exemplo deve ser apenas localhost"

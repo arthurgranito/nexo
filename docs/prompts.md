@@ -110,7 +110,9 @@ sem conflito de escrita; revisão não concede permissão de deploy. O agente pr
 resultados e executa testes. Não confundir esses papéis com os nós LangGraph do produto.
 ```
 
-## MCPs de desenvolvimento
+## MCPs de desenvolvimento -> FEITO
+
+Definição: [mcp-desenvolvimento.md](mcp-desenvolvimento.md) e [.cursor/mcp.json.example](../.cursor/mcp.json.example).
 
 ```text
 Avalie se um MCP reduz trabalho real neste projeto antes de criar servidor customizado.
